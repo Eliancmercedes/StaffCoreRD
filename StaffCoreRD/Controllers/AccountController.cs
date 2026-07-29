@@ -53,5 +53,36 @@ namespace StaffCoreRD.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: true);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError(string.Empty, "Esta cuenta ha sido bloqueada temporalmente por múltiples intentos fallidos. Intenta más tarde.");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Credenciales incorrectas. Verifica tu correo y contraseña.");
+            }
+
+            return View(model);
+        }
     }
 }

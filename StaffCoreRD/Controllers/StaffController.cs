@@ -27,5 +27,28 @@ namespace StaffCoreRD.Controllers
 
             return View(personal);
         }
+
+        // GET: Staff/Create
+        [Authorize(Roles = "Administrador,RRHH")]
+        public IActionResult Create()
+        {
+            return View(new Staff());
+        }
+
+        // POST: Staff/Create
+        [HttpPost]
+        [Authorize(Roles = "Administrador,RRHH")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Staff staff)
+        {
+            if (!ModelState.IsValid)
+                return View(staff);
+
+            _context.Add(staff);
+            await _context.SaveChangesAsync();
+
+            TempData["Exito"] = "Empleado creado exitosamente.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

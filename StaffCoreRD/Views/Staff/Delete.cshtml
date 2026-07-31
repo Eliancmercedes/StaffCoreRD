@@ -1,0 +1,30 @@
+﻿@model StaffCoreRD.Models.Staff
+
+@{
+    ViewData["Title"] = "Eliminar Empleado";
+}
+
+<h2>Eliminar Empleado</h2>
+
+<div class="alert alert-warning">
+    ¿Estás seguro de que deseas eliminar a este empleado? Esta acción no se puede deshacer.
+</div>
+
+<div class="card" style="max-width: 500px;">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Nombre</h5>
+        <p class="card-text">
+            <strong>Cédula:</strong> @Model.Cedula<br />
+            <strong>Cargo:</strong> @Model.Cargo<br />
+            <strong>Departamento:</strong> @Model.Departamento<br />
+            <strong>Salario:</strong> @Model.Salario.ToString("C")<br />
+            <strong>Fecha de Ingreso:</strong> @Model.FechaIngreso.ToShortDateString()
+        </p>
+
+        <form asp-controller="Staff" asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+            <a asp-controller="Staff" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
